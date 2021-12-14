@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+declare -A FMT_SET=(
+  # Set
+  [reset]=0
+  [bold]=1
+  [dim]=2
+  [underline]=4
+  [blink]=5
+  [reverse]=7
+  [hidden]=8
+  # fg colors
+  [fg:default]=39
+  [fg:black]=30
+  [fg:red]=31
+  [fg:green]=32
+  [fg:yellow]=33
+  [fg:blue]=34
+  [fg:magenta]=35
+  [fg:cyan]=36
+  [fg:light-gray]=37
+  [fg:dark-gray]=90
+  [fg:light-red]=91
+  [fg:light-green]=92
+  [fg:light-yellow]=93
+  [fg:light-blue]=94
+  [fg:light-magenta]=95
+  [fg:light-cyan]=96
+  [fg:white]=97
+  # bg colors
+  [bg:default]=49
+  [bg:black]=40
+  [bg:red]=41
+  [bg:green]=42
+  [bg:yellow]=43
+  [bg:blue]=44
+  [bg:magenta]=45
+  [bg:cyan]=46
+  [bg:light-gray]=47
+  [bg:dark-gray]=100
+  [bg:light-red]=101
+  [bg:light-green]=102
+  [bg:light-yellow]=103
+  [bg:light-blue]=104
+  [bg:light-magenta]=105
+  [bg:light-cyan]=106
+  [bg:white]=107
+)
+
+function vtfmt {
+  local out=(); for comp in "$@"; do out+=("${FMT_SET[$comp]}"); done
+  IFS=';' ; echo "\033[${out[*]}m"
+}
+
+# script is not sourced
+if [[ ${#BASH_SOURCE[@]} -lt 2 ]]; then
+  # has arguments
+  if [[ $# -gt 0 ]]; then
+    vtfmt "$@"
+  else
+    echo -en "$(vtfmt bg:light-magenta fg:black bold) vtfmt $(vtfmt reset) "
+    echo -e "This utility is by no means $(vtfmt fg:green)feature $(vtfmt underline)complete.$(vtfmt reset) "
+    echo -e "And yet it can do quite some things considering how $(vtfmt bold)small$(vtfmt normal) it is!"
+    echo ""
+    declare -f vtfmt
+    echo ""
+
+    # or basically anywhere to compose different color modes
+    WARN_C="$(vtfmt bg:yellow fg:black) WARN $(vtfmt reverse) %s$(vtfmt reset)\n"
+    INF_C="$(vtfmt bg:green fg:black) INFO $(vtfmt reverse) %s$(vtfmt reset)\n"
+    ERR_C="$(vtfmt bg:red fg:black)  ERR $(vtfmt reverse) %s$(vtfmt reset)\n"
+
+    function inf  { printf "$INF_C" "$*" ; }
+    function err  { printf "$ERR_C" "$*" ; }
+    function warn { printf "$WARN_C" "$*" ; }
+
+    inf "some info"
+    warn "you have been warned"
+    err "such an error"
+  fi
+fi
