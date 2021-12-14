@@ -4,7 +4,7 @@
 mode on terminals.  It can both be used as a standalone tool or directly sourced
 from your bash scripts.
 
-![demo](https://user-images.githubusercontent.com/208952/146025087-4a0e8fb7-08e4-4b55-bba4-ef8eabc72451.png)
+<img src="https://user-images.githubusercontent.com/208952/146025087-4a0e8fb7-08e4-4b55-bba4-ef8eabc72451.png" width="600">
 
 ## Usage
 
