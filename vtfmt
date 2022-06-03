@@ -49,7 +49,7 @@ declare -A FMT_SET=(
 
 function vtfmt {
   local out=(); for comp in "$@"; do out+=("${FMT_SET[$comp]}"); done
-  IFS=';' ; echo "\033[${out[*]}m"
+  echo $(IFS=';' ; echo "\033[${out[*]}m")
 }
 
 # script is not sourced
